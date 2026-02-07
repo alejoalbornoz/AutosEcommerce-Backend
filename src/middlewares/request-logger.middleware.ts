@@ -1,34 +1,23 @@
 import { Request, Response, NextFunction } from "express";
-import { AppError } from "../utils/AppError";
 import { logger } from "../utils/logger";
 
-export function errorHandler(
-  err: Error,
+export function requestLogger(
   req: Request,
   res: Response,
-  _next: NextFunction
+  next: NextFunction
 ) {
-  if (err instanceof AppError) {
-    logger.warn({
-      message: err.message,
-      statusCode: err.statusCode,
-      path: req.path,
+  const start = Date.now();
+
+  res.on("finish", () => {
+    const duration = Date.now() - start;
+
+    logger.info({
       method: req.method,
+      path: req.originalUrl,
+      statusCode: res.statusCode,
+      duration: `${duration}ms`,
     });
-
-    return res.status(err.statusCode).json({
-      error: err.message,
-    });
-  }
-
-  logger.error({
-    message: err.message,
-    stack: err.stack,
-    path: req.path,
-    method: req.method,
   });
 
-  return res.status(500).json({
-    error: "Internal server error",
-  });
+  next();
 }
