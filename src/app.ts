@@ -1,4 +1,8 @@
 import express from "express";
+import "dotenv/config";
+
+import { testDbConnection } from "./db/testConnection";
+
 
 export const app = express();
 // import cors from "cors";
@@ -8,6 +12,13 @@ export const app = express();
 // app.use(cors());
 app.use(express.json());
 
+testDbConnection()
+
 // app.use("/api", routes);
 
 // app.use(errorHandler);
+
+
+export default app;
+
+
