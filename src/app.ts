@@ -1,24 +1,25 @@
 import express from "express";
 import "dotenv/config";
+import cors from "cors";
+import authRoutes from "./routes/auth.routes";
+import morgan from "morgan";
+import { routes } from "./routes";
+import { errorHandler } from "./middlewares/error.middleware";
 
-import { testDbConnection } from "./db/testConnection";
+// import { testDbConnection } from "./db/testConnection";
 
+const app = express();
 
-export const app = express();
-// import cors from "cors";
-// import { routes } from "./routes";
-// import { errorHandler } from "./middlewares/error.middleware";
+app.use(cors());
+app.use(morgan("dev"));
 
-// app.use(cors());
 app.use(express.json());
 
-testDbConnection()
+// testDbConnection();
 
-// app.use("/api", routes);
+app.use("/auth", authRoutes);
+app.use("/api", routes);
 
-// app.use(errorHandler);
-
+app.use(errorHandler);
 
 export default app;
-
-
