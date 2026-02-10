@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { registerUser } from "../services/auth.service";
+import { loginUser } from "../services/auth.service";
 
 export async function register(req: Request, res: Response) {
   const { email, password } = req.body;
@@ -20,3 +21,11 @@ export async function register(req: Request, res: Response) {
     return res.status(500).json({ message: "Error interno" });
   }
 }
+
+export const login = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  const data = await loginUser(email, password);
+
+  res.status(200).json(data);
+};
