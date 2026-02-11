@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { registerUser } from "../services/auth.service";
 import { loginUser } from "../services/auth.service";
+import { generateAccessToken } from "../utils/jwt";
+
 
 export async function register(req: Request, res: Response) {
   const { email, password } = req.body;
@@ -22,10 +24,18 @@ export async function register(req: Request, res: Response) {
   }
 }
 
-export const login = async (req: Request, res: Response) => {
+export async function login(req: Request, res: Response) {
   const { email, password } = req.body;
 
-  const data = await loginUser(email, password);
+  const user = await loginUser(email, password);
 
-  res.status(200).json(data);
-};
+  const accessToken = generateAccessToken({
+    id: user.id,
+    role: user.role,
+  });
+
+  res.status(200).json({
+    accessToken,
+    user,
+  });
+}

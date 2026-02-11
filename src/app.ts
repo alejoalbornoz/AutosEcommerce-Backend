@@ -6,7 +6,7 @@ import morgan from "morgan";
 import { routes } from "./routes";
 import { errorHandler } from "./middlewares/error.middleware";
 
-// import { testDbConnection } from "./db/testConnection";
+import { testDbConnection } from "./db/testConnection";
 
 const app = express();
 
@@ -15,7 +15,7 @@ app.use(morgan("dev"));
 
 app.use(express.json());
 
-// testDbConnection();
+testDbConnection();
 
 app.use("/auth", authRoutes);
 app.use("/api", routes);
