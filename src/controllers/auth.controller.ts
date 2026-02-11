@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+
 import { registerUser } from "../services/auth.service";
 import { loginUser } from "../services/auth.service";
 import { generateAccessToken } from "../utils/jwt";
@@ -39,3 +40,9 @@ export async function login(req: Request, res: Response) {
     user,
   });
 }
+
+export const me = (req: Request, res: Response) => {
+  res.json({
+    user: req.user, // Ahora debería funcionar
+  });
+};
